@@ -262,4 +262,9 @@
         #define CC_STATIC_ASSERT(Expression, Message) typedef char CC_CONCAT(cc_static_assert_failed_, __LINE__)[(Message) ? 1 : -1]
     #endif
 
+    #define CC_ARRAY_COUNT(Array) (sizeof(Array) / sizeof((Array)[0]))
+    #define CC_MIN(a, b) (((a) < (b)) ? (a) : (b))
+    #define CC_MAX(a, b) (((a) > (b)) ? (a) : (b))
+    #define CC_CLAMP(x, Low, High) (CC_MAX((Low), CC_MIN((x), (High))))
+
 #endif
