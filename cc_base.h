@@ -198,5 +198,19 @@
     #else
         #define CC_API CC_IMPORT
     #endif
+
+    #if defined(_MSC_VER)
+        #define CC_INLINE __inline
+        #define CC_FORCE_INLINE __forceinline
+        #define CC_NO_INLINE __declspec(noinline)
+    #elif defined(__clang__) || defined(__GNUC__)
+        #define CC_INLINE inline
+        #define CC_FORCE_INLINE inline __attribute__((always_inline))
+        #define CC_NO_INLINE __attribute__((noinline))
+    #else
+        #define CC_INLINE inline
+        #define CC_FORCE_INLINE inline
+        #define CC_NO_INLINE
+    #endif
     
 #endif
