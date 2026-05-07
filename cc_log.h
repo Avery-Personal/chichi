@@ -1,5 +1,5 @@
-#ifndef CHICHI_LOGGING
-#define CHICHI_LOGGING
+#ifndef CHICHI_LOGGING_H
+#define CHICHI_LOGGING_H
 
     #ifdef __cplusplus
         extern "C" {
