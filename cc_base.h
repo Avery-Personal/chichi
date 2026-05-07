@@ -301,6 +301,14 @@
         #endif
     #endif
 
-    
+    #if defined(__has_cpp_attribute)
+        #if __has_cpp_attribute(maybe_unused)
+            #define CC_MAYBE_UNUSED [[maybe_unused]]
+        #else
+            #define CC_MAYBE_UNUSED
+        #endif
+    #else
+        #define CC_MAYBE_UNUSED
+    #endif
 
 #endif
