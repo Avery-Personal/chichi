@@ -168,13 +168,27 @@
     #endif
 
     #if defined(_MSC_VER)
-        #define CC_CDECL __cdecl
+        #define CC_CDECLERATION __cdecl
         #define CC_STDCALL __stdcall
         #define CC_FASTCALL __fastcall
     #else
-        #define CC_CDECL
+        #define CC_CDECLERATION
         #define CC_STDCALL
         #define CC_FASTCALL
+    #endif
+
+    #if defined(_WIN32) || defined(_WIN64)
+        #define CC_EXPORT __declspec(dllexport)
+        #define CC_IMPORT __declspec(dllimport)
+        #define CC_HIDDEN
+    #elif defined(__GNUC__) || defined(__clang__)
+        #define CC_EXPORT __attribute__((visibility("default")))
+        #define CC_IMPORT __attribute__((visibility("default")))
+        #define CC_HIDDEN __attribute__((visibility("hidden")))
+    #else
+        #define CC_EXPORT
+        #define CC_IMPORT
+        #define CC_HIDDEN
     #endif
     
 #endif
