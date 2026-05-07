@@ -108,4 +108,10 @@
         #define CC_PLATFORM CC_PLATFORM_UNKNOWN
     #endif
 
+    #define CC_ARCH_UNKNOWN 0
+    #define CC_ARCH_X86 1
+    #define CC_ARCH_X64 2
+    #define CC_ARCH_ARM32 3
+    #define CC_ARCH_ARM64 4
+
 #endif
