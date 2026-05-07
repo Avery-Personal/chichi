@@ -1,24 +1,34 @@
 #ifndef CHICHI_LOGGING_H
 #define CHICHI_LOGGING_H
 
-    #ifdef __cplusplus
-        extern "C" {
+    #ifdef CHICHI_BASE_H
+        #define CC_LOG_HAS_BASE 1
+    #else
+        #define CC_LOG_HAS_BASE 0
     #endif
 
-    #ifndef CC_LOG_LEVEL
-        #define CC_LOG_LEVEL CC_LOG_LEVEL_TRACE
-    #endif
+    #if !CC_LOG_HAS_BASE
+        #ifdef __cplusplus
+            #define CC_EXTERN_C_BEGIN extern "C" {
+            #define CC_EXTERN_C_END }
+        #else
+            #define CC_EXTERN_C_BEGIN
+            #define CC_EXTERN_C_END
+        #endif
 
-    #if defined(_WIN32)
-        #if defined(CC_LOG_BUILD_DLL)
-            #define CC_LOG_API __declspec(dllexport)
-        #elif defined(CC_LOG_USE_DLL)
+        #if defined(_WIN32)
             #define CC_LOG_API __declspec(dllimport)
         #else
             #define CC_LOG_API
         #endif
     #else
-        #define CC_LOG_API
+        #define CC_LOG_API CC_API
+    #endif
+
+    CC_EXTERN_C_BEGIN
+
+    #ifndef CC_LOG_LEVEL
+        #define CC_LOG_LEVEL CC_LOG_LEVEL_TRACE
     #endif
 
     typedef enum CCLogLevel {
@@ -41,8 +51,6 @@
         const char *Message;
     } CCLogMessage;
     
-    #ifdef __cplusplus
-        }
-    #endif
+    CC_EXTERN_C_END
 
 #endif
