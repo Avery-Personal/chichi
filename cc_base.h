@@ -47,4 +47,34 @@
         #define CC_COMPILER_NAME "Unknown"
     #endif
 
+    #if CC_COMPILER == CC_COMPILER_MSVC
+        #define CC_COMPILER_VERSION_MAJOR _MSC_VER
+        #define CC_COMPILER_VERSION_MINOR 0
+        #define CC_COMPILER_VERSION_PATCH 0
+    #elif CC_COMPILER == CC_COMPILER_CLANG
+        #ifdef __clang_major__
+            #define CC_COMPILER_VERSION_MAJOR __clang_major__
+            #define CC_COMPILER_VERSION_MINOR __clang_minor__
+            #define CC_COMPILER_VERSION_PATCH __clang_patchlevel__
+        #else
+            #define CC_COMPILER_VERSION_MAJOR 0
+            #define CC_COMPILER_VERSION_MINOR 0
+            #define CC_COMPILER_VERSION_PATCH 0
+        #endif
+    #elif CC_COMPILER == CC_COMPILER_GCC
+        #ifdef __GNUC__
+            #define CC_COMPILER_VERSION_MAJOR __GNUC__
+            #define CC_COMPILER_VERSION_MINOR __GNUC_MINOR__
+            #define CC_COMPILER_VERSION_PATCH __GNUC_PATCHLEVEL__
+        #else
+            #define CC_COMPILER_VERSION_MAJOR 0
+            #define CC_COMPILER_VERSION_MINOR 0
+            #define CC_COMPILER_VERSION_PATCH 0
+        #endif
+    #else
+        #define CC_COMPILER_VERSION_MAJOR 0
+        #define CC_COMPILER_VERSION_MINOR 0
+        #define CC_COMPILER_VERSION_PATCH 0
+    #endif
+
 #endif
