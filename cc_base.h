@@ -269,7 +269,7 @@
 
     #if defined(_MSC_VER)
         #include <intrin.h>
-        
+
         #define CC_DEBUGBREAK() __debugbreak()
         #define CC_TRAP() __debugbreak()
     #elif defined(__clang__) || defined(__GNUC__)
@@ -277,9 +277,21 @@
         #define CC_TRAP() __builtin_trap()
     #else
         #include <signal.h>
-        
+
         #define CC_DEBUGBREAK() raise(SIGTRAP)
         #define CC_TRAP() raise(SIGTRAP)
+    #endif
+
+    #if defined(__cplusplus) && (__cplusplus >= 201703L)
+        #define CC_NODISCARD [[nodiscard]]
+    #elif defined(__has_cpp_attribute)
+        #if __has_cpp_attribute(nodiscard)
+            #define CC_NODISCARD [[nodiscard]]
+        #else
+            #define CC_NODISCARD
+        #endif
+    #else
+        #define CC_NODISCARD
     #endif
 
 #endif
