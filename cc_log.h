@@ -5,7 +5,21 @@
         extern "C" {
     #endif
 
+    #ifndef CC_LOG_LEVEL
+        #define CC_LOG_LEVEL CC_LOG_LEVEL_TRACE
+    #endif
 
+    #if defined(_WIN32)
+        #if defined(CC_LOG_BUILD_DLL)
+            #define CC_LOG_API __declspec(dllexport)
+        #elif defined(CC_LOG_USE_DLL)
+            #define CC_LOG_API __declspec(dllimport)
+        #else
+            #define CC_LOG_API
+        #endif
+    #else
+        #define CC_LOG_API
+    #endif
     
     #ifdef __cplusplus
         }
