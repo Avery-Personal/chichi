@@ -232,5 +232,26 @@
     #else
         #define CC_ALIGN_OF(T) sizeof(struct { char c; T t; }) - sizeof(T)
     #endif
+    
+    #define CC_CACHELINE_SIZE 64
+
+    #if defined(_MSC_VER)
+        #define CC_PACK_PUSH(N) __pragma(pack(push, N))
+        #define CC_PACK_POP __pragma(pack(pop))
+    #elif defined(__clang__) || defined(__GNUC__)
+        #define CC_PACK_PUSH(N) _Pragma(CC_STRINGIFY(pack(push, N)))
+        #define CC_PACK_POP _Pragma("pack(pop)")
+    #else
+        #define CC_PACK_PUSH(N)
+        #define CC_PACK_POP
+    #endif
+    
+    #if defined(__clang__) || defined(__GNUC__)
+        #define CC_LIKELY(x)   __builtin_expect(!!(x), 1)
+        #define CC_UNLIKELY(x) __builtin_expect(!!(x), 0)
+    #else
+        #define CC_LIKELY(x)   (x)
+        #define CC_UNLIKELY(x) (x)
+    #endif
 
 #endif
