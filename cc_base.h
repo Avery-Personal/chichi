@@ -9,4 +9,7 @@
     #define CC_STRINGIFY_IMPLEMENTATION(x) #x
     #define CC_STRINGIFY(x) CC_STRINGIFY_IMPLEMENTATION(x)
 
+    #define CC_CONCAT_IMPLEMENTATION(a, b) a##b
+    #define CC_CONCAT(a, b) CC_CONCAT_IMPLEMENTATION(a, b)
+
 #endif
