@@ -12,4 +12,9 @@
     #define CC_CONCAT_IMPLEMENTATION(a, b) a##b
     #define CC_CONCAT(a, b) CC_CONCAT_IMPLEMENTATION(a, b)
 
+    #define CC_COMPILER_UNKNOWN 0
+    #define CC_COMPILER_MSVC 1
+    #define CC_COMPILER_CLANG 2
+    #define CC_COMPILER_GCC 3
+
 #endif
