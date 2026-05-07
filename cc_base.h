@@ -259,7 +259,7 @@
     #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
         #define CC_STATIC_ASSERT(Expression, Message) _Static_assert((Expression), Message)
     #else
-        #define CC_STATIC_ASSERT(Expression, Message) typedef char CC_CONCAT(cc_static_assert_failed_, __LINE__)[(Message) ? 1 : -1]
+        #define CC_STATIC_ASSERT(Expression, Message) typedef char CC_CONCAT(cc_static_assert_failed_, __LINE__)[(Expression) ? 1 : -1]
     #endif
 
     #define CC_ARRAY_COUNT(Array) (sizeof(Array) / sizeof((Array)[0]))
@@ -392,7 +392,7 @@
     #endif
 
     typedef CCuSize CCSize;
-    typedef CCiSize CCPointerDifferencee;
+    typedef CCiSize CCPointerDifference;
 
     typedef float CCf32;
     typedef double CCf64;
