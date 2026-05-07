@@ -247,10 +247,10 @@
     #endif
     
     #if defined(__clang__) || defined(__GNUC__)
-        #define CC_LIKELY(x)   __builtin_expect(!!(x), 1)
+        #define CC_LIKELY(x) __builtin_expect(!!(x), 1)
         #define CC_UNLIKELY(x) __builtin_expect(!!(x), 0)
     #else
-        #define CC_LIKELY(x)   (x)
+        #define CC_LIKELY(x) (x)
         #define CC_UNLIKELY(x) (x)
     #endif
 
