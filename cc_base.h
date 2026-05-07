@@ -267,4 +267,19 @@
     #define CC_MAX(a, b) (((a) > (b)) ? (a) : (b))
     #define CC_CLAMP(x, Low, High) (CC_MAX((Low), CC_MIN((x), (High))))
 
+    #if defined(_MSC_VER)
+        #include <intrin.h>
+        
+        #define CC_DEBUGBREAK() __debugbreak()
+        #define CC_TRAP() __debugbreak()
+    #elif defined(__clang__) || defined(__GNUC__)
+        #define CC_DEBUGBREAK() __builtin_debugtrap()
+        #define CC_TRAP() __builtin_trap()
+    #else
+        #include <signal.h>
+        
+        #define CC_DEBUGBREAK() raise(SIGTRAP)
+        #define CC_TRAP() raise(SIGTRAP)
+    #endif
+
 #endif
