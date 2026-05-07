@@ -114,4 +114,21 @@
     #define CC_ARCH_ARM32 3
     #define CC_ARCH_ARM64 4
 
+    #if defined(_M_X64) || defined(__x86_64__) || defined(__amd64__)
+        #define CC_ARCH_NAME "x64"
+        #define CC_ARCH CC_ARCH_X64
+    #elif defined(_M_IX86) || defined(__i386__)
+        #define CC_ARCH_NAME "x86"
+        #define CC_ARCH CC_ARCH_X86
+    #elif defined(_M_ARM64) || defined(__aarch64__)
+        #define CC_ARCH_NAME "ARM64"
+        #define CC_ARCH CC_ARCH_ARM64
+    #elif defined(_M_ARM) || defined(__arm__)
+        #define CC_ARCH_NAME "ARM32"
+        #define CC_ARCH CC_ARCH_ARM32
+    #else
+        #define CC_ARCH_NAME "Unknown"
+        #define CC_ARCH CC_ARCH_UNKNOWN
+    #endif
+
 #endif
