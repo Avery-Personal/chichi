@@ -157,4 +157,14 @@
         #define CC_BUILD_DEBUG 1
     #endif
 
+    #if CC_LANG_CPP
+        #define CC_EXTERN_C_BEGIN extern "C" {
+        #define CC_EXTERN_C_END }
+        #define CC_EXTERN_C extern "C"
+    #else
+        #define CC_EXTERN_C_BEGIN
+        #define CC_EXTERN_C_END
+        #define CC_EXTERN_C
+    #endif
+    
 #endif
