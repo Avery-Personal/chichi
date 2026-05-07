@@ -17,4 +17,34 @@
     #define CC_COMPILER_CLANG 2
     #define CC_COMPILER_GCC 3
 
+    #if defined(_MSC_VER)
+        #define CC_COMPILER_NAME "MSVC"
+        #define CC_COMPILER_MSVC_ACTIVE 1
+    #else
+        #define CC_COMPILER_MSVC_ACTIVE 0
+    #endif
+
+    #if defined(__clang__)
+        #undef CC_COMPILER
+        #define CC_COMPILER CC_COMPILER_CLANG
+        #define CC_COMPILER_NAME "Clang"
+        #define CC_COMPILER_CLANG_ACTIVE 1
+    #else
+        #define CC_COMPILER_CLANG_ACTIVE 0
+    #endif
+
+    #if defined(__GNUC__) && !defined(__clang__)
+        #undef CC_COMPILER
+        #define CC_COMPILER CC_COMPILER_GCC
+        #define CC_COMPILER_NAME "GCC"
+        #define CC_COMPILER_GCC_ACTIVE 1
+    #else
+        #define CC_COMPILER_GCC_ACTIVE 0
+    #endif
+
+    #ifndef CC_COMPILER
+        #define CC_COMPILER CC_COMPILER_UNKNOWN
+        #define CC_COMPILER_NAME "Unknown"
+    #endif
+
 #endif
