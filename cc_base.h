@@ -84,4 +84,28 @@
     #define CC_PLATFORM_IOS 4
     #define CC_PLATFORM_ANDROID 5
 
+    #if defined(_WIN32) || defined(_WIN64)
+        #define CC_PLATFORM_NAME "Windows"
+        #define CC_PLATFORM CC_PLATFORM_WINDOWS
+    #elif defined(__APPLE__) && defined(__MACH__)
+        #include <TargetConditionals.h>
+
+        #if defined(TARGET_OS_IPHONE) && TARGET_OS_IPHONE
+            #define CC_PLATFORM_NAME "iOS"
+            #define CC_PLATFORM CC_PLATFORM_IOS
+        #else
+            #define CC_PLATFORM_NAME "MacOS"
+            #define CC_PLATFORM CC_PLATFORM_MACOS
+        #endif
+    #elif defined(__ANDROID__)
+        #define CC_PLATFORM_NAME "Android"
+        #define CC_PLATFORM CC_PLATFORM_ANDROID
+    #elif defined(__linux__)
+        #define CC_PLATFORM_NAME "Linux"
+        #define CC_PLATFORM CC_PLATFORM_LINUX
+    #else
+        #define CC_PLATFORM_NAME "Unknown"
+        #define CC_PLATFORM CC_PLATFORM_UNKNOWN
+    #endif
+
 #endif
