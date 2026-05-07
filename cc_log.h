@@ -29,6 +29,17 @@
         CC_LOG_LEVEL_ERROR,
         CC_LOG_LEVEL_FATAL
     } CCLogLevel;
+
+    typedef struct CCLogMessage {
+        CCLogLevel Level;
+
+        const char *File;
+        const char *Function;
+
+        int Line;
+
+        const char *Message;
+    } CCLogMessage;
     
     #ifdef __cplusplus
         }
