@@ -294,4 +294,13 @@
         #define CC_NODISCARD
     #endif
 
+    #if defined(__has_c_attribute)
+        #if __has_c_attribute(nodiscard)
+            #undef CC_NODISCARD
+            #define CC_NODISCARD [[nodiscard]]
+        #endif
+    #endif
+
+    
+
 #endif
