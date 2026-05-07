@@ -190,5 +190,13 @@
         #define CC_IMPORT
         #define CC_HIDDEN
     #endif
+
+    #if defined(CC_STATIC)
+        #define CC_API
+    #elif defined(CC_BUILD_DLL)
+        #define CC_API CC_EXPORT
+    #else
+        #define CC_API CC_IMPORT
+    #endif
     
 #endif
