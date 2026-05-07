@@ -166,5 +166,15 @@
         #define CC_EXTERN_C_END
         #define CC_EXTERN_C
     #endif
+
+    #if defined(_MSC_VER)
+        #define CC_CDECL __cdecl
+        #define CC_STDCALL __stdcall
+        #define CC_FASTCALL __fastcall
+    #else
+        #define CC_CDECL
+        #define CC_STDCALL
+        #define CC_FASTCALL
+    #endif
     
 #endif
