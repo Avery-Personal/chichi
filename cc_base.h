@@ -220,5 +220,17 @@
     #else
         #define CC_ALIGN(N)
     #endif
-    
+
+    #if defined(_MSC_VER)
+        #define CC_ALIGN_OF(T) __alignof(T)
+    #elif defined(__cplusplus)
+        #define CC_ALIGN_OF(T) alignof(T)
+    #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
+        #include <stdalign.h>
+
+        #define CC_ALIGN_OF(T) alignof(T)
+    #else
+        #define CC_ALIGN_OF(T) sizeof(struct { char c; T t; }) - sizeof(T)
+    #endif
+
 #endif
