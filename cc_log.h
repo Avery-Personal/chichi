@@ -20,6 +20,15 @@
     #else
         #define CC_LOG_API
     #endif
+
+    typedef enum CCLogLevel {
+        CC_LOG_LEVEL_TRACE = 0,
+        CC_LOG_LEVEL_DEBUG,
+        CC_LOG_LEVEL_INFO,
+        CC_LOG_LEVEL_WARN,
+        CC_LOG_LEVEL_ERROR,
+        CC_LOG_LEVEL_FATAL
+    } CCLogLevel;
     
     #ifdef __cplusplus
         }
