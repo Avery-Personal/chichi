@@ -17,7 +17,13 @@
         #endif
 
         #if defined(_WIN32)
-            #define CC_LOG_API __declspec(dllimport)
+            #if defined(CC_LOG_BUILD_DLL)
+                #define CC_LOG_API __declspec(dllexport)
+            #elif defined(CC_LOG_USE_DLL)
+                #define CC_LOG_API __declspec(dllimport)
+            #else
+                #define CC_LOG_API
+            #endif
         #else
             #define CC_LOG_API
         #endif
