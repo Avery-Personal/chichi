@@ -318,7 +318,7 @@
             #define CC_NULLPTR 0
         #endif
     #else
-        #define CC_NULLPTR ((void *)0)
+        #define CC_NULLPTR ((void *) 0)
     #endif
 
     CC_STATIC_ASSERT(sizeof(void *) >= 4, "cc_base - pointer size must be at least 32 bits");
@@ -328,7 +328,7 @@
     #endif
 
     #ifndef CC_NULL
-        #define CC_NULL ((void *)0)
+        #define CC_NULL ((void *) 0)
     #endif
 
     #ifndef CC_TRUE
