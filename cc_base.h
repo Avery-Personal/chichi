@@ -255,9 +255,9 @@
     #endif
 
     #if defined(__cplusplus) && (__cplusplus >= 201103L)
-        #define CC_STATIC_ASSERT(Expression, Message) static_assert((Message), Message)
+        #define CC_STATIC_ASSERT(Expression, Message) static_assert((Expression), Message)
     #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-        #define CC_STATIC_ASSERT(Expression, Message) _Static_assert((Message), Message)
+        #define CC_STATIC_ASSERT(Expression, Message) _Static_assert((Expression), Message)
     #else
         #define CC_STATIC_ASSERT(Expression, Message) typedef char CC_CONCAT(cc_static_assert_failed_, __LINE__)[(Message) ? 1 : -1]
     #endif
