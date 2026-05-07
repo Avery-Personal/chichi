@@ -230,7 +230,7 @@
 
         #define CC_ALIGN_OF(T) alignof(T)
     #else
-        #define CC_ALIGN_OF(T) sizeof(struct { char c; T t; }) - sizeof(T)
+        #define CC_ALIGN_OF(T) sizeof(struct { char Character; T Type; }) - sizeof(T)
     #endif
     
     #define CC_CACHELINE_SIZE 64
@@ -252,6 +252,14 @@
     #else
         #define CC_LIKELY(x) (x)
         #define CC_UNLIKELY(x) (x)
+    #endif
+
+    #if defined(__cplusplus) && (__cplusplus >= 201103L)
+        #define CC_STATIC_ASSERT(Expression, Message) static_assert((Message), Message)
+    #elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
+        #define CC_STATIC_ASSERT(Expression, Message) _Static_assert((Message), Message)
+    #else
+        #define CC_STATIC_ASSERT(Expression, Message) typedef char CC_CONCAT(cc_static_assert_failed_, __LINE__)[(Message) ? 1 : -1]
     #endif
 
 #endif
