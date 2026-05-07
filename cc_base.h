@@ -139,4 +139,22 @@
         #define CC_LANG_C 1
     #endif
 
+    #if defined(CC_SHIPPING)
+        #define CC_BUILD_SHIPPING 1
+        #define CC_BUILD_RELEASE 0
+        #define CC_BUILD_DEBUG 0
+    #elif defined(CC_RELEASE)
+        #define CC_BUILD_SHIPPING 0
+        #define CC_BUILD_RELEASE 1
+        #define CC_BUILD_DEBUG 0
+    #elif defined(NDEBUG)
+        #define CC_BUILD_SHIPPING 0
+        #define CC_BUILD_RELEASE 1
+        #define CC_BUILD_DEBUG 0
+    #else
+        #define CC_BUILD_SHIPPING 0
+        #define CC_BUILD_RELEASE 0
+        #define CC_BUILD_DEBUG 1
+    #endif
+
 #endif
