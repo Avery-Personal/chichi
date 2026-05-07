@@ -323,4 +323,78 @@
 
     CC_STATIC_ASSERT(sizeof(void *) >= 4, "cc_base - pointer size must be at least 32 bits");
 
+    #ifndef CC_UNUSED
+        #define CC_UNUSED(x) ((void)(x))
+    #endif
+
+    #ifndef CC_NULL
+        #define CC_NULL ((void *)0)
+    #endif
+
+    #ifndef CC_TRUE
+        #define CC_TRUE 1
+    #endif
+
+    #ifndef CC_FALSE
+        #define CC_FALSE 0
+    #endif
+
+    typedef unsigned char CCBool;
+    typedef signed char CCi8;
+    typedef unsigned char CCu8;
+
+    #if defined(__SIZEOF_SHORT__) && (__SIZEOF_SHORT__ == 2)
+        typedef signed short CCi16;
+        typedef unsigned short CCu16;
+    #elif defined(__UINT16_TYPE__)
+        typedef __INT16_TYPE__ CCi16;
+        typedef __UINT16_TYPE__ CCu16;
+    #else
+        typedef signed short CCi16;
+        typedef unsigned short CCu16;
+    #endif
+
+    #if defined(__SIZEOF_INT__) && (__SIZEOF_INT__ == 4)
+        typedef signed int CCi32;
+        typedef unsigned int CCu32;
+    #elif defined(__UINT32_TYPE__)
+        typedef __INT32_TYPE__ CCi32;
+        typedef __UINT32_TYPE__ CCu32;
+    #else
+        typedef signed int CCi32;
+        typedef unsigned int CCu32;
+    #endif
+
+    #if defined(__SIZEOF_LONG__) && (__SIZEOF_LONG__ == 8)
+        typedef signed long CCi64;
+        typedef unsigned long CCu64;
+    #elif defined(__SIZEOF_LONG_LONG__) && (__SIZEOF_LONG_LONG__ == 8)
+        typedef signed long long CCi64;
+        typedef unsigned long long CCu64;
+    #elif defined(__INT64_TYPE__)
+        typedef __INT64_TYPE__ CCi64;
+        typedef __UINT64_TYPE__ CCu64;
+    #else
+        typedef signed long long CCi64;
+        typedef unsigned long long CCu64;
+    #endif
+
+    #if defined(__SIZE_TYPE__)
+        typedef __SIZE_TYPE__ CCuSize;
+    #else
+        typedef unsigned long CCuSize;
+    #endif
+
+    #if defined(__PTRDIFF_TYPE__)
+        typedef __PTRDIFF_TYPE__ CCiSize;
+    #else
+        typedef signed long CCiSize;
+    #endif
+
+    typedef CCuSize CCSize;
+    typedef CCiSize CCPointerDifferencee;
+
+    typedef float CCf32;
+    typedef double CCf64;
+
 #endif
