@@ -77,4 +77,11 @@
         #define CC_COMPILER_VERSION_PATCH 0
     #endif
 
+    #define CC_PLATFORM_UNKNOWN 0
+    #define CC_PLATFORM_WINDOWS 1
+    #define CC_PLATFORM_MACOS 2
+    #define CC_PLATFORM_LINUX 3
+    #define CC_PLATFORM_IOS 4
+    #define CC_PLATFORM_ANDROID 5
+
 #endif
