@@ -43,8 +43,8 @@
     #endif
 
     #ifndef CC_COMPILER
-        #define CC_COMPILER CC_COMPILER_UNKNOWN
         #define CC_COMPILER_NAME "Unknown"
+        #define CC_COMPILER CC_COMPILER_UNKNOWN
     #endif
 
     #if CC_COMPILER == CC_COMPILER_MSVC
@@ -129,6 +129,14 @@
     #else
         #define CC_ARCH_NAME "Unknown"
         #define CC_ARCH CC_ARCH_UNKNOWN
+    #endif
+
+    #if defined(__cplusplus)
+        #define CC_LANG_CPP 1
+        #define CC_LANG_C 0
+    #else
+        #define CC_LANG_CPP 0
+        #define CC_LANG_C 1
     #endif
 
 #endif
