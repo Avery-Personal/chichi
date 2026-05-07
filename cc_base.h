@@ -212,5 +212,13 @@
         #define CC_FORCE_INLINE inline
         #define CC_NO_INLINE
     #endif
+
+    #if defined(_MSC_VER)
+        #define CC_ALIGN(N) __declspec(align(N))
+    #elif defined(__clang__) || defined(__GNUC__)
+        #define CC_ALIGN(N) __attribute__((aligned(N)))
+    #else
+        #define CC_ALIGN(N)
+    #endif
     
 #endif
