@@ -311,4 +311,14 @@
         #define CC_MAYBE_UNUSED
     #endif
 
+    #if defined(__cplusplus)
+        #if __cplusplus >= 201103L
+            #define CC_NULLPTR nullptr
+        #else
+            #define CC_NULLPTR 0
+        #endif
+    #else
+        #define CC_NULLPTR ((void *)0)
+    #endif
+
 #endif
