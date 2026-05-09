@@ -1,3 +1,7 @@
+#if (defined(CHICHI_IMPLEMENTATION) && !defined(CHICHI_LOG_IMPLEMENTATION)) || (defined(CC_IMPLEMENTATION) && !defined(CHICHI_LOG_IMPLEMENTATION))
+    #define CHICHI_LOG_IMPLEMENTATION
+#endif
+
 #ifndef CHICHI_LOGGING_H
 #define CHICHI_LOGGING_H
 
@@ -99,6 +103,39 @@
 
         CCu32 SinkCount;
     } CCLogger;
+
+    CC_LOG_API extern CCLogger gCCLogger;
+
+    CC_LOG_API void CCLogInitialize(void);
+    CC_LOG_API void CCLogShutdown(void);
+
+    CC_LOG_API void CCLogSetLevel(CCLogLevel Level);
+
+    CC_LOG_API void CCLogEnableConsole(CCBool Enabled);
+    CC_LOG_API void CCLogEnableColors(CCBool Enabled);
+    CC_LOG_API void CCLogEnableTimestamp(CCBool Enabled);
+
+    #ifndef CHICHI_LOG_IMPLEMENTATION
+        #ifndef CC_LOG_NO_COLOR
+            #define CC_LOG_COLOR_TRACE "\x1b[90m"
+            #define CC_LOG_COLOR_DEBUG "\x1b[36m"
+            #define CC_LOG_COLOR_INFO  "\x1b[32m"
+            #define CC_LOG_COLOR_WARN  "\x1b[33m"
+            #define CC_LOG_COLOR_ERROR "\x1b[31m"
+            #define CC_LOG_COLOR_FATAL "\x1b[35m"
+            #define CC_LOG_COLOR_RESET "\x1b[0m"
+        #endif
+
+        CCLogger gCCLogger = {CC_LOG_LEVEL_TRACE, CC_TRUE, CC_TRUE, CC_TRUE, {0}, 0};
+
+        static const char *CHICHI__LogLevelColor(CCLogLevel Level) {
+            #ifndef CC_LOG_NO_COLOR
+                switch (Level) {
+                    case CC_LOG_LEVEL_TRACE
+                }
+            #endif
+        }
+    #endif
     
     CC_EXTERN_C_END
 
