@@ -31,6 +31,17 @@
         #else
             #define CC_LOG_API
         #endif
+
+        #ifndef CC_TRUE
+            #define CC_TRUE 1
+        #endif
+
+        #ifndef CC_FALSE
+            #define CC_FALSE 0
+        #endif
+
+        typedef unsigned char CCBool;
+        typedef unsigned int CCu32;
     #else
         #define CC_LOG_API CC_API
     #endif
@@ -39,6 +50,14 @@
 
     #ifndef CC_LOG_LEVEL
         #define CC_LOG_LEVEL CC_LOG_LEVEL_TRACE
+    #endif
+
+    #ifndef CC_LOG_MAX_MESSAGE
+        #define CC_LOG_MAX_MESSAGE 4096
+    #endif
+
+    #ifndef CC_LOG_MAX_SINKS
+        #define CC_LOG_MAX_SINKS 8
     #endif
 
     typedef enum CCLogLevel {
@@ -69,6 +88,17 @@
         void *Userdata;
     } CCLogSink;
     
+    typedef struct CCLogger {
+        CCLogLevel MinimumLevel;
+
+        CCBool EnableConsole;
+        CCBool EnableColors;
+        CCBool EnableTimestamp;
+
+        CCLogSink Sink[CC_LOG_MAX_SINKS];
+
+        CCu32 SinkCount;
+    } CCLogger;
     
     CC_EXTERN_C_END
 
