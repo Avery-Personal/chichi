@@ -1,12 +1,16 @@
 #ifndef CHICHI_LOGGING_H
 #define CHICHI_LOGGING_H
 
+    #include <stdio.h>
+
     #ifdef CHICHI_BASE_H
         #define CC_LOG_HAS_BASE 1
     #else
         #define CC_LOG_HAS_BASE 0
     #endif
 
+    // Chichi's base is meant to stop this, that is, boilercode in headers & overall libraries/systems.
+    // Though in the case of someone NOT including said base, I need to make the bare minimum for essential header data/structs.
     #if !CC_LOG_HAS_BASE
         #ifdef __cplusplus
             #define CC_EXTERN_C_BEGIN extern "C" {
@@ -56,6 +60,15 @@
 
         const char *Message;
     } CCLogMessage;
+
+    typedef void (*CCLogSinkFunction)(const CCLogMessage *Message, void *UserData);
+
+    typedef struct CCLogSink {
+        CCLogSinkFunction Callback;
+
+        void *Userdata;
+    } CCLogSink;
+    
     
     CC_EXTERN_C_END
 
