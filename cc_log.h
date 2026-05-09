@@ -304,31 +304,39 @@
             Message.Message = Buffer;
 
             if (gCCLogger.EnableConsole) {
+                char TimeBuffer[64] = {0};
+                char FinalBuffer[CC_LOG_MAX_MESSAGE + 256];
+
+                size_t Offset = 0;
+
                 #ifndef CC_LOG_NO_TIME
                     if (gCCLogger.EnableTimestamp) {
                         time_t TimeValue = time(NULL);
-
                         struct tm *TimeInfo = localtime(&TimeValue);
 
-                        char TimeBuffer[64];
-
                         strftime(TimeBuffer, sizeof(TimeBuffer), "%H:%M:%S", TimeInfo);
-
-                        printf("[%s] ", TimeBuffer);
+                        
+                        Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset, "[%s] ", TimeBuffer);
                     }
                 #endif
 
                 #ifndef CC_LOG_NO_COLOR
                     if (gCCLogger.EnableColors) {
-                        printf("%s", CHICHI__LogLevelColor(Level));
+                        Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset, "%s", CHICHI__LogLevelColor(Level));
                     }
                 #endif
-                    printf("[%s] %s (%s:%d %s)\n", CCLogLevelString(Level), Buffer, File, Line, Function);
+
+                Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset,"[%s] %s (%s:%d %s)", CCLogLevelString(Level), Buffer, File, Line, Function);
+
                 #ifndef CC_LOG_NO_COLOR
                     if (gCCLogger.EnableColors) {
-                        printf("%s", CC_LOG_COLOR_RESET);
+                        Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset, "%s", CC_LOG_COLOR_RESET);
                     }
                 #endif
+
+                Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset, "\n");
+
+                fputs(FinalBuffer, stdout);
             }
 
             for (CCu32 i = 0; i < gCCLogger.SinkCount; ++i) {
