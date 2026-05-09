@@ -106,7 +106,7 @@
     typedef struct CCLogSink {
         CCLogSinkFunction Callback;
 
-        void *Userdata;
+        void *UserData;
     } CCLogSink;
     
     typedef struct CCLogger {
@@ -131,6 +131,9 @@
     CC_LOG_API void CCLogEnableConsole(CCBool Enabled);
     CC_LOG_API void CCLogEnableColors(CCBool Enabled);
     CC_LOG_API void CCLogEnableTimestamp(CCBool Enabled);
+
+    CC_LOG_API CCBool CCLogAddSink(CCLogSinkFunction Callback, void *UserData);
+    CC_LOG_API void CCLogClearSinks(void);
 
     #ifndef CHICHI_LOG_IMPLEMENTATION
         #ifndef CC_LOG_NO_COLOR
@@ -190,6 +193,22 @@
 
         void CCLogEnableTimestamp(CCBool Enabled) {
             gCCLogger.EnableTimestamp = Enabled;
+        }
+
+        CCBool CCLogAddSink(CCLogSinkFunction Callback, void *UserData) {
+            if (gCCLogger.SinkCount >= CC_LOG_MAX_SINKS)
+                return CC_FALSE;
+
+            CCLogSink *Sink = &gCCLogger.Sinks[gCCLogger.SinkCount++];
+
+            Sink -> Callback = Callback;
+            Sink -> UserData = UserData;
+
+            return CC_TRUE;
+        }
+
+        void CCLogClearSinks(void) {
+            gCCLogger.SinkCount = 0;
         }
     #endif
     
