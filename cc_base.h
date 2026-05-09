@@ -397,4 +397,21 @@
     typedef float CCf32;
     typedef double CCf64;
 
+    #if defined(__clang__) || defined(__GNUC__)
+        typedef __builtin_va_list CCVAList;
+
+        #define CCVAStart __builtin_va_start
+        #define CCVAArgument __builtin_va_arg
+        #define CCVAEnd __builtin_va_end
+        #define CCVACopy __builtin_va_copy
+    #else
+        typedef unsigned char *CCVAList;
+
+        #define CC_VA_ALIGN(Type) (((sizeof(Type) + sizeof(int) - 1) / sizeof(int)) * sizeof(int))
+        #define CCVAStart(ArgumentPointer, Last) ((ArgumentPointer) = ((CCVAList) & (Last) + CC_VA_ALIGN(Last)))
+        #define CCVAArgument(ArgumentPointer, Type) (*(Type *)(((ArgumentPointer) += CC_VA_ALIGN(Type)) - CC_VA_ALIGN(Type)))
+        #define CCVAEnd(ArgumentPointer) ((ArgumentPointer) = (CCVAList) 0)
+        #define CCVACopy(Destination, Source) ((Destination) = (Source))
+    #endif
+
 #endif
