@@ -180,9 +180,17 @@
             gCCLogger.MinimumLevel = Level;
         }
 
-        void CCLogEnableConsole(CCBool Enabled);
-        void CCLogEnableColors(CCBool Enabled);
-        void CCLogEnableTimestamp(CCBool Enabled);
+        void CCLogEnableConsole(CCBool Enabled) {
+            gCCLogger.EnableConsole = Enabled;
+        }
+
+        void CCLogEnableColors(CCBool Enabled) {
+            gCCLogger.EnableColors = Enabled;
+        }
+
+        void CCLogEnableTimestamp(CCBool Enabled) {
+            gCCLogger.EnableTimestamp = Enabled;
+        }
     #endif
     
     CC_EXTERN_C_END
