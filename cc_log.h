@@ -46,6 +46,23 @@
 
         typedef unsigned char CCBool;
         typedef unsigned int CCu32;
+
+        #if defined(__clang__) || defined(__GNUC__)
+            typedef __builtin_va_list CCVAList;
+
+            #define CCVAStart __builtin_va_start
+            #define CCVAArgument __builtin_va_arg
+            #define CCVAEnd __builtin_va_end
+            #define CCVACopy __builtin_va_copy
+        #else
+            typedef unsigned char *CCVAList;
+
+            #define CC_VA_ALIGN(Type) (((sizeof(Type) + sizeof(int) - 1) / sizeof(int)) * sizeof(int))
+            #define CCVAStart(ArgumentPointer, Last) ((ArgumentPointer) = ((CCVAList) & (Last) + CC_VA_ALIGN(Last)))
+            #define CCVAArgument(ArgumentPointer, Type) (*(Type *)(((ArgumentPointer) += CC_VA_ALIGN(Type)) - CC_VA_ALIGN(Type)))
+            #define CCVAEnd(ArgumentPointer) ((ArgumentPointer) = (CCVAList) 0)
+            #define CCVACopy(Destination, Source) ((Destination) = (Source))
+        #endif
     #else
         #define CC_LOG_API CC_API
     #endif
@@ -99,7 +116,7 @@
         CCBool EnableColors;
         CCBool EnableTimestamp;
 
-        CCLogSink Sink[CC_LOG_MAX_SINKS];
+        CCLogSink Sinks[CC_LOG_MAX_SINKS];
 
         CCu32 SinkCount;
     } CCLogger;
@@ -158,6 +175,14 @@
         void CCLogShutdown(void) {
             gCCLogger.SinkCount = 0;
         }
+
+        void CCLogSetLevel(CCLogLevel Level) {
+            gCCLogger.MinimumLevel = Level;
+        }
+
+        void CCLogEnableConsole(CCBool Enabled);
+        void CCLogEnableColors(CCBool Enabled);
+        void CCLogEnableTimestamp(CCBool Enabled);
     #endif
     
     CC_EXTERN_C_END
