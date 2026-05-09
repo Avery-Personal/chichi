@@ -146,6 +146,18 @@
                 return "";
             #endif
         }
+
+        void CCLogInitialize(void) {
+            gCCLogger.MinimumLevel = CC_LOG_LEVEL_TRACE;
+            gCCLogger.EnableConsole = CC_TRUE;
+            gCCLogger.EnableColors = CC_TRUE;
+            gCCLogger.EnableTimestamp  = CC_TRUE;
+            gCCLogger.SinkCount = 0;
+        }
+
+        void CCLogShutdown(void) {
+            gCCLogger.SinkCount = 0;
+        }
     #endif
     
     CC_EXTERN_C_END
