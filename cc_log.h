@@ -5,8 +5,6 @@
 #ifndef CHICHI_LOGGING_H
 #define CHICHI_LOGGING_H
 
-    #include <stdio.h>
-
     #ifdef CHICHI_BASE_H
         #define CC_LOG_HAS_BASE 1
     #else
@@ -135,9 +133,15 @@
     CC_LOG_API CCBool CCLogAddSink(CCLogSinkFunction Callback, void *UserData);
     CC_LOG_API void CCLogClearSinks(void);
 
-    const char *CCLogLevelString(CCLogLevel Level);
+    CC_LOG_API void CCLogWrite(CCLogLevel Level, const char *File, const char *Function, int Line, const char *Format, ...);
+    CC_LOG_API void CCLogWriteVA(CCLogLevel Level, const char *File, const char *Function, int Line, const char *Format, CCVAList Arguments);
+
+    CC_LOG_API const char *CCLogLevelString(CCLogLevel Level);
 
     #ifndef CHICHI_LOG_IMPLEMENTATION
+        #include <stdio.h>
+        #include <time.h>
+        
         #ifndef CC_LOG_NO_COLOR
             #define CC_LOG_COLOR_TRACE "\x1b[90m"
             #define CC_LOG_COLOR_DEBUG "\x1b[36m"
@@ -223,6 +227,69 @@
                 case CC_LOG_LEVEL_FATAL: return "FATAL";
 
                 default: return "UNKNOWN";
+            }
+        }
+
+        CC_LOG_API void CCLogWrite(CCLogLevel Level, const char *File, const char *Function, int Line, const char *Format, ...) {
+            CCVAList Arguments;
+
+            CCVAStart(Arguments, Format);
+
+            CCLogWriteVA(Level, File, Function, Line, Format, Arguments);
+
+            CCVAEnd(Arguments);
+        }
+
+        CC_LOG_API void CCLogWriteVA(CCLogLevel Level, const char *File, const char *Function, int Line, const char *Format, CCVAList Arguments) {
+            if (Level < gCCLogger.MinimumLevel)
+                return;
+
+            char Buffer[CC_LOG_MAX_MESSAGE];
+
+            vsnprintf(Buffer, sizeof(Buffer), Format, Arguments);
+
+            CCLogMessage Message;
+
+            Message.Level = Level;
+            Message.File = File;
+            Message.Function = Function;
+            Message.Line = Line;
+            Message.Message = Buffer;
+
+            if (gCCLogger.EnableConsole) {
+                #ifndef CC_LOG_NO_TIME
+                    if (gCCLogger.EnableTimestamp) {
+                        time_t TimeValue = time(NULL);
+
+                        struct tm *TimeInfo = localtime(&TimeValue);
+
+                        char TimeBuffer[64];
+
+                        strftime(TimeBuffer, sizeof(TimeBuffer), "%H:%M:%S", TimeInfo);
+
+                        printf("[%s] ", TimeBuffer);
+                    }
+                #endif
+
+                #ifndef CC_LOG_NO_COLOR
+                    if (gCCLogger.EnableColors) {
+                        printf("%s", cc__log_level_color(Level));
+                    }
+                #endif
+                    printf("[%s] %s (%s:%d %s)\n", cc_log_level_string(Level), Buffer, File, Line, Function);
+                #ifndef CC_LOG_NO_COLOR
+                    if (gCCLogger.EnableColors) {
+                        printf("%s", CC_LOG_COLOR_RESET);
+                    }
+                #endif
+            }
+
+            for (CCu32 i = 0; i < gCCLogger.SinkCount; ++i) {
+                CCLogSink *Sink = &gCCLogger.Sinks[i];
+
+                if (Sink -> Callback) {
+                    Sink -> Callback(&Message, Sink -> UserData);
+                }
             }
         }
     #endif
