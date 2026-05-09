@@ -138,8 +138,55 @@
 
     CC_LOG_API const char *CCLogLevelString(CCLogLevel Level);
 
-    #ifndef CHICHI_LOG_IMPLEMENTATION
+    #if CC_LOG_LEVEL <= CC_LOG_LEVEL_TRACE
+        #define CC_TRACE(...) CCLogWrite(CC_LOG_LEVEL_TRACE, __FILE__, __func__, __LINE__, __VA_ARGS__)
+    #else
+        #define CC_TRACE(...)
+    #endif
+
+    #if CC_LOG_LEVEL <= CC_LOG_LEVEL_DEBUG
+        #define CC_DEBUG(...) CCLogWrite(CC_LOG_LEVEL_DEBUG, __FILE__, __func__, __LINE__, __VA_ARGS__)
+    #else
+        #define CC_DEBUG(...)
+    #endif
+
+    #if CC_LOG_LEVEL <= CC_LOG_LEVEL_INFO
+        #define CC_INFO(...) CCLogWrite(CC_LOG_LEVEL_INFO, __FILE__, __func__, __LINE__, __VA_ARGS__)
+    #else
+        #define CC_INFO(...)
+    #endif
+
+    #if CC_LOG_LEVEL <= CC_LOG_LEVEL_WARN
+        #define CC_WARN(...) CCLogWrite(CC_LOG_LEVEL_WARN, __FILE__, __func__, __LINE__, __VA_ARGS__)
+    #else
+        #define CC_WARN(...)
+    #endif
+
+    #if CC_LOG_LEVEL <= CC_LOG_LEVEL_ERROR
+        #define CC_ERROR(...) CCLogWrite(CC_LOG_LEVEL_ERROR, __FILE__, __func__, __LINE__, __VA_ARGS__)
+    #else
+        #define CC_ERROR(...)
+    #endif
+
+    #if CC_LOG_LEVEL <= CC_LOG_LEVEL_FATAL
+        #define CC_FATAL(...) CCLogWrite(CC_LOG_LEVEL_FATAL, __FILE__, __func__, __LINE__, __VA_ARGS__)
+    #else
+        #define CC_FATAL(...)
+    #endif
+
+    #define CC_ASSERT(Expression, ...) \
+        do { \
+            if (!(Expression)) { \
+                CC_FATAL(__VA_ARGS__); \
+            } \
+        } while (0)
+    #ifdef __cplusplus
+        }
+    #endif
+
+    #ifdef CHICHI_LOG_IMPLEMENTATION
         #include <stdio.h>
+        #include <stdarg.h>
         #include <time.h>
         
         #ifndef CC_LOG_NO_COLOR
@@ -273,10 +320,10 @@
 
                 #ifndef CC_LOG_NO_COLOR
                     if (gCCLogger.EnableColors) {
-                        printf("%s", cc__log_level_color(Level));
+                        printf("%s", CHICHI__LogLevelColor(Level));
                     }
                 #endif
-                    printf("[%s] %s (%s:%d %s)\n", cc_log_level_string(Level), Buffer, File, Line, Function);
+                    printf("[%s] %s (%s:%d %s)\n", CCLogLevelString(Level), Buffer, File, Line, Function);
                 #ifndef CC_LOG_NO_COLOR
                     if (gCCLogger.EnableColors) {
                         printf("%s", CC_LOG_COLOR_RESET);
