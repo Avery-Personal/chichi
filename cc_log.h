@@ -119,8 +119,8 @@
         #ifndef CC_LOG_NO_COLOR
             #define CC_LOG_COLOR_TRACE "\x1b[90m"
             #define CC_LOG_COLOR_DEBUG "\x1b[36m"
-            #define CC_LOG_COLOR_INFO  "\x1b[32m"
-            #define CC_LOG_COLOR_WARN  "\x1b[33m"
+            #define CC_LOG_COLOR_INFO "\x1b[32m"
+            #define CC_LOG_COLOR_WARN "\x1b[33m"
             #define CC_LOG_COLOR_ERROR "\x1b[31m"
             #define CC_LOG_COLOR_FATAL "\x1b[35m"
             #define CC_LOG_COLOR_RESET "\x1b[0m"
@@ -131,8 +131,19 @@
         static const char *CHICHI__LogLevelColor(CCLogLevel Level) {
             #ifndef CC_LOG_NO_COLOR
                 switch (Level) {
-                    case CC_LOG_LEVEL_TRACE
+                    case CC_LOG_LEVEL_TRACE: return CC_LOG_COLOR_TRACE;
+                    case CC_LOG_LEVEL_DEBUG: return CC_LOG_COLOR_DEBUG;
+                    case CC_LOG_LEVEL_INFO: return CC_LOG_COLOR_INFO;
+                    case CC_LOG_LEVEL_WARN: return CC_LOG_COLOR_WARN;
+                    case CC_LOG_LEVEL_ERROR: return CC_LOG_COLOR_ERROR;
+                    case CC_LOG_LEVEL_FATAL: return CC_LOG_COLOR_FATAL;
+
+                    default: return CC_LOG_COLOR_RESET;
                 }
+            #else
+                (void) Level;
+
+                return "";
             #endif
         }
     #endif
