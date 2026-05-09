@@ -135,6 +135,8 @@
     CC_LOG_API CCBool CCLogAddSink(CCLogSinkFunction Callback, void *UserData);
     CC_LOG_API void CCLogClearSinks(void);
 
+    const char *CCLogLevelString(CCLogLevel Level);
+
     #ifndef CHICHI_LOG_IMPLEMENTATION
         #ifndef CC_LOG_NO_COLOR
             #define CC_LOG_COLOR_TRACE "\x1b[90m"
@@ -209,6 +211,19 @@
 
         void CCLogClearSinks(void) {
             gCCLogger.SinkCount = 0;
+        }
+
+        const char *CCLogLevelString(CCLogLevel Level) {
+            switch (Level) {
+                case CC_LOG_LEVEL_TRACE: return "TRACE";
+                case CC_LOG_LEVEL_DEBUG: return "DEBUG";
+                case CC_LOG_LEVEL_INFO: return "INFO";
+                case CC_LOG_LEVEL_WARN: return "WARN";
+                case CC_LOG_LEVEL_ERROR: return "ERROR";
+                case CC_LOG_LEVEL_FATAL: return "FATAL";
+
+                default: return "UNKNOWN";
+            }
         }
     #endif
     
