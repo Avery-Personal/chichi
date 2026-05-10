@@ -76,11 +76,15 @@
         CCBool IsServer;
     } CCNetHost;
 
-    CC_NET_API static int CCNetInitialize(void);
-    CC_NET_API static void CCNetCleanup(void);
+    CC_NET_API int CCNetInitialize(void);
+    CC_NET_API void CCNetCleanup(void);
+
+    CC_NET_API int CCNetSocketCreate(void);
 
     #ifdef CHICHI_NET_IMPLEMENTATION
-        static int CCNetInitialize(void) {
+        #include <stdio.h>
+
+        int CCNetInitialize(void) {
             #ifdef _WIN32
                 WSADATA WSAData;
 
@@ -90,10 +94,18 @@
             #endif
         }
         
-        static void CCNetCleanup(void) {
+        void CCNetCleanup(void) {
             #ifdef _WIN32
                 WSACleanup();
             #endif
+        }
+
+        int CCNetSocketCreate(void) {
+            int Socket = socket(AF_INET, SOCK_DGRAM, 0);
+            if (Socket < 0)
+                perror("Socket");
+
+            return Socket;
         }
     #endif
 
