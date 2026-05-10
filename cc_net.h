@@ -58,4 +58,8 @@
         #define CC_NET_MAX_PACKET 2048
     #endif
 
+    typedef struct {
+        int Sock;
+    } CCNetSocket;
+
 #endif
