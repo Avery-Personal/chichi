@@ -46,6 +46,8 @@
         #define CC_NET_API CC_API
     #endif
 
+    CC_EXTERN_C_BEGIN
+
     #ifndef _WIN32
         #include <unistd.h>
         #include <arpa/inet.h>
@@ -61,5 +63,7 @@
     typedef struct {
         int Sock;
     } CCNetSocket;
+
+    CC_EXTERN_C_END
 
 #endif
