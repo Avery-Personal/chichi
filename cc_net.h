@@ -2,8 +2,8 @@
     #define CHICHI_NET_IMPLEMENTATION
 #endif
 
-#ifndef CHICHI_NET_IMPLEMENTATION
-#define CHICHI_NET_IMPLEMENTATION
+#ifndef CHICHI_NET_H
+#define CHICHI_NET_H
 
     #ifdef CHICHI_BASE_H
         #define CC_NET_HAS_BASE 1
@@ -86,6 +86,8 @@
     CC_NET_API int CCNetSend(CCNetHost *Host, const char *IP, int Port, const void *Data, int Size);
     CC_NET_API int CCNetReceive(CCNetHost *Host, char *Buffer, int MaxSize, CCNetPeer *OutputPeer);
 
+    CC_NET_API void CCNetClose(CCNetHost *Host);
+
     #ifdef CHICHI_NET_IMPLEMENTATION
         #include <stdio.h>
         #include <string.h>
@@ -161,6 +163,14 @@
             OutputPeer -> Length = Length;
 
             return Received;
+        }
+
+        void CCNetClose(CCNetHost *Host) {
+            #ifdef _WIN32
+                closesocket(Host -> Socket.Sock);
+            #else
+                close(Host -> Socket.Sock);
+            #endif
         }
     #endif
 
