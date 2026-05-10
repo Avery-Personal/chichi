@@ -99,7 +99,7 @@
     CC_NET_API int CCNetInitialize(void);
     CC_NET_API void CCNetCleanup(void);
 
-    CC_NET_API int CCNetSocketCreate(void);
+    CC_NET_API CCSocketHandle CCNetSocketCreate(void);
 
     CC_NET_API CCBool CCNetHostCreate(CCNetHost *Host, const char *IP, int Port, CCBool IsServer);
 
@@ -116,7 +116,7 @@
             #ifdef _WIN32
                 WSADATA WSAData;
 
-                return WSAStartup(MAKEWORD(2, 2), &WSAData);
+                return (WSAStartup(MAKEWORD(2, 2), &WSAData) == 0) ? 0 : -1;
             #else
                 return 0;
             #endif
@@ -128,10 +128,15 @@
             #endif
         }
 
-        int CCNetSocketCreate(void) {
-            int Socket = socket(AF_INET, SOCK_DGRAM, 0);
-            if (Socket < 0)
-                perror("Socket");
+        CCSocketHandle CCNetSocketCreate(void) {
+            CCSocketHandle Socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+            if (Socket == CC_INVALID_SOCKET) {
+                #ifdef _WIN32
+                    fprintf(stderr, "Socket error: %d\n", WSAGetLastError());
+                #else
+                    perror("Socket");
+                #endif
+            }
 
             return Socket;
         }
