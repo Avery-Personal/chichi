@@ -83,6 +83,8 @@
 
     CC_NET_API CCBool CCNetHostCreate(CCNetHost *Host, const char *IP, int Port, CCBool IsServer);
 
+    CC_NET_API int CCNetSend(CCNetHost *Host, const char *IP, int Port, const void *Data, int Size);
+
     #ifdef CHICHI_NET_IMPLEMENTATION
         #include <stdio.h>
         #include <string.h>
@@ -138,6 +140,16 @@
             }
 
             return CC_TRUE;
+        }
+
+        int CCNetSend(CCNetHost *Host, const char *IP, int Port, const void *Data, int Size) {
+            struct sockaddr_in Address;
+
+            Address.sin_family = AF_INET;
+            Address.sin_port = htons(Port);
+            Address.sin_addr.s_addr = inet_addr(IP);
+
+            return sendto(Host -> Socket.Sock, Data, Size, 0, (struct sockaddr *) &Address, sizeof(Address));
         }
     #endif
 
