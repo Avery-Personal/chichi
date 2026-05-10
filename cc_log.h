@@ -326,7 +326,11 @@
                     }
                 #endif
 
-                Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset,"[%s] %s (%s:%d %s)", CCLogLevelString(Level), Buffer, File, Line, Function);
+                #ifndef CC_LOG_NO_LEVEL_STATE
+                    Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset,"[%s] %s (%s:%d %s)", CCLogLevelString(Level), Buffer, File, Line, Function);
+                #elif defined(CC_LOG_NO_LEVEL_STATE)
+                    Offset += snprintf(FinalBuffer + Offset, sizeof(FinalBuffer) - Offset,"%s (%s:%d %s)", Buffer, File, Line, Function);
+                #endif
 
                 #ifndef CC_LOG_NO_COLOR
                     if (gCCLogger.EnableColors) {
