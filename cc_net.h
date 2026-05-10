@@ -54,6 +54,8 @@
         #include <winsock2.h>
     #endif
 
-    
+    #ifndef CC_NET_MAX_PACKET
+        #define CC_NET_MAX_PACKET 2048
+    #endif
 
 #endif
