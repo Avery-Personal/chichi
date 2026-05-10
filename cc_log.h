@@ -53,7 +53,7 @@
           C11> - Recommended (C)
         C++11 - Minimum (C++)
           C++17> - Recommended (C++)
-        ObjC 4.0 - Minimum (Objective-C)
+        ObjC 4.0> - Minimum (Objective-C)
         ObjC++ 4.2 - Minimum (Objective-C++)
           ObjC++ 5.0> - Recommended (Objective-C++)
 
