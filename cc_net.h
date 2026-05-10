@@ -81,8 +81,11 @@
 
     CC_NET_API int CCNetSocketCreate(void);
 
+    CC_NET_API CCBool CCNetHostCreate(CCNetHost *Host, const char *IP, int Port, CCBool IsServer);
+
     #ifdef CHICHI_NET_IMPLEMENTATION
         #include <stdio.h>
+        #include <string.h>
 
         int CCNetInitialize(void) {
             #ifdef _WIN32
@@ -106,6 +109,35 @@
                 perror("Socket");
 
             return Socket;
+        }
+
+        CCBool CCNetHostCreate(CCNetHost *Host, const char *IP, int Port, CCBool IsServer) {
+            Host -> Socket.Sock = CCNetSocketCreate();
+            Host -> IsServer = IsServer;
+
+            if (Host -> Socket.Sock < 0)
+                return CC_FALSE;
+
+            struct sockaddr_in Address;
+
+            memset(&Address, 0, sizeof(Address));
+
+            Address.sin_family = AF_INET;
+            Address.sin_port = htons(Port);
+
+            if (IsServer) {
+                Address.sin_addr.s_addr = INADDR_ANY;
+
+                if (bind(Host -> Socket.Sock, (struct sockaddr *) &Address, sizeof(Address)) < 0) {
+                    perror("Bind");
+
+                    return CC_FALSE;
+                }
+            } else {
+                Address.sin_addr.s_addr = inet_addr(IP);
+            }
+
+            return CC_TRUE;
         }
     #endif
 
