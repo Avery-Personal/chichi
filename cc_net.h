@@ -65,25 +65,35 @@
     } CCNetSocket;
 
     typedef struct {
-
+        struct sockaddr_in Address;
+        
+        socklen_t Length;
     } CCNetPeer;
+
+    typedef struct {
+        CCNetSocket Socket;
+
+        CCBool IsServer;
+    } CCNetHost;
 
     CC_NET_API static int CCNetInitialize(void);
     CC_NET_API static void CCNetCleanup(void);
 
     #ifdef CHICHI_NET_IMPLEMENTATION
         static int CCNetInitialize(void) {
-            #ifndef _WIN32
-                return 0;
-            #else
+            #ifdef _WIN32
                 WSADATA WSAData;
 
                 return WSAStartup(MAKEWORD(2, 2), &WSAData);
+            #else
+                return 0;
             #endif
         }
         
         static void CCNetCleanup(void) {
-
+            #ifdef _WIN32
+                WSACleanup();
+            #endif
         }
     #endif
 
