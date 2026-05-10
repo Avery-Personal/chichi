@@ -52,8 +52,28 @@
         #include <unistd.h>
         #include <arpa/inet.h>
         #include <sys/socket.h>
+        #include <netinet/in.h>
+
+        typedef int CCSocketHandle;
+        typedef socklen_t CCSockLength;
+
+        #define CC_INVALID_SOCKET (-1)
+        #define CC_SOCKET_ERROR (-1)
     #else
+        #ifndef WIN32_LEAN_AND_MEAN
+            #define WIN32_LEAN_AND_MEAN
+        #endif
+        
         #include <winsock2.h>
+        #include <ws2tcpip.h>
+
+        #pragma comment(Library, "Ws2_32.lib")
+
+        typedef SOCKET CCSocketHandle;
+        typedef int CCSockLength;
+
+        #define CC_INVALID_SOCKET INVALID_SOCKET
+        #define CC_SOCKET_ERROR SOCKET_ERROR
     #endif
 
     #ifndef CC_NET_MAX_PACKET
