@@ -1,3 +1,64 @@
+/*
+
+    cc_log.h - Embeddable & Stylish Framework of Logging for Chichi headers & general libaries
+
+    ALLPU License (Asuka License for Loosely Protective Use)
+    Copyright © 2026 Averi
+
+    Usage:
+        #define CHICHI_IMPLEMENTATION (General Chichi implementation of ALL headers)
+        #define CC_IMPLEMENTATION (General Chichi implementation of ALL headers)
+        #define CHICHI_LOG_IMPLEMENTATION
+
+        Use this before inclusion of ANY Chichi header, regardless of language(s)
+    
+    In addition, these are defines available during usage of Chichi's log:
+        CHICHI_BASE_H - Use if, ONLY if "cc_base.h" is included
+            - Used to enchance Chichi header files
+                - If not included, fallbacks of all mandatory types are of the following:
+                    - CC_EXTERN_C_BEGIN
+                    - CC_EXTERN_C_END
+                    - CCBool
+                    - CCu32
+                    - CCVAList
+                    - CC_TRUE
+                    - CC_FALSE
+                - If not included, fallbacks of all mandatory configurations are of the following:
+                    - CC_LOG_BUILD_DLL
+                    - CC_LOG_USE_DLL
+                    - CC_API (Via fallbacked configurations)
+                - If not included, fallbacks of all mandatory functions are of the following:
+                    - CCVAStart
+                    - CCVAArgument
+                    - CCVAEnd
+                    - CCVACopy
+        CC_LOG_LEVEL - Use IF you want a hard override of all logging levels (Default is TRACE)
+            - Regardless of received log level, uses defined one
+                - #define CC_LOG_LEVEL CC_LOG_LEVEL_DEBUG (Example)
+        CC_LOG_MAX_MESSAGE - Use IF you want to change maximum formatted log message size (Default is 4096)
+        CC_LOG_MAX_SINKS - Use IF you want to change maximum registers sinks/callbacks
+        CC_LOG_NO_COLOR - Disables ANSI color output
+        CC_LOG_NO_TIME - Removes all timestamp logic from logs
+        CC_LOG_NO_LEVEL_STATE - Removes level state heads-up
+            - With level:
+                [02:19:26] [ERROR] From the Bay! (skating.c:20 main)
+            - Without level:
+                [10:30:01] You Rock My World (hehe.c:43 dance)
+        _WIN32 - Controls Windows platform for CC_API
+            - Use if, ONLY if you are a Windows user
+                - Windows should embed this macro by default
+
+    Standards:
+        C99 - Minimum (C)
+          C11> - Recommended (C)
+        C++11 - Minimum (C++)
+          C++17> - Recommended (C++)
+        ObjC 4.0 - Minimum (Objective-C)
+        ObjC++ 4.2 - Minimum (Objective-C++)
+          ObjC++ 5.0> - Recommended (Objective-C++)
+
+*/
+
 #if (defined(CHICHI_IMPLEMENTATION) && !defined(CHICHI_LOG_IMPLEMENTATION)) || (defined(CC_IMPLEMENTATION) && !defined(CHICHI_LOG_IMPLEMENTATION))
     #define CHICHI_LOG_IMPLEMENTATION
 #endif
