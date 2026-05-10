@@ -67,7 +67,7 @@
         #include <winsock2.h>
         #include <ws2tcpip.h>
 
-        #pragma comment(Library, "Ws2_32.lib")
+        #pragma comment(lib, "Ws2_32.lib")
 
         typedef SOCKET CCSocketHandle;
         typedef int CCSockLength;
@@ -81,13 +81,13 @@
     #endif
 
     typedef struct {
-        int Sock;
+        CCSocketHandle Sock;
     } CCNetSocket;
 
     typedef struct {
         struct sockaddr_in Address;
         
-        socklen_t Length;
+        CCSockLength Length;
     } CCNetPeer;
 
     typedef struct {
@@ -145,6 +145,8 @@
             if (!Host)
                 return CC_FALSE;
 
+            Host -> Socket.Sock = CC_INVALID_SOCKET;
+
             Host -> Socket.Sock = CCNetSocketCreate();
             Host -> IsServer = IsServer;
 
@@ -195,16 +197,16 @@
             if (inet_pton(AF_INET, IP, &Address.sin_addr) != 1)
                 return -1;
 
-            return sendto(Host -> Socket.Sock, Data, Size, 0, (struct sockaddr *) &Address, sizeof(Address));
+            return sendto(Host -> Socket.Sock, (const char *) Data, Size, 0, (struct sockaddr *) &Address, sizeof(Address));
         }
 
         int CCNetReceive(CCNetHost *Host, char *Buffer, int MaxSize, CCNetPeer *OutputPeer) {
             if (!Host || Host -> Socket.Sock == CC_INVALID_SOCKET || !Buffer || MaxSize <= 0 || !OutputPeer)
                 return -1;
 
-            socklen_t Length = sizeof(OutputPeer -> Address);
+            CCSockLength Length = sizeof(OutputPeer -> Address);
 
-            int Received = recvfrom(Host -> Socket.Sock, Buffer, MaxSize, 0, (struct sockaddr *) &OutputPeer -> Address, &Length);
+            int Received = recvfrom(Host -> Socket.Sock, (char *) Buffer, MaxSize, 0, (struct sockaddr *) &OutputPeer -> Address, &Length);
 
             OutputPeer -> Length = Length;
 
