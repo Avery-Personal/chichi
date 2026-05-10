@@ -142,10 +142,13 @@
         }
 
         CCBool CCNetHostCreate(CCNetHost *Host, const char *IP, int Port, CCBool IsServer) {
+            if (!Host)
+                return CC_FALSE;
+
             Host -> Socket.Sock = CCNetSocketCreate();
             Host -> IsServer = IsServer;
 
-            if (Host -> Socket.Sock < 0)
+            if (Host -> Socket.Sock == CC_INVALID_SOCKET)
                 return CC_FALSE;
 
             struct sockaddr_in Address;
@@ -156,15 +159,23 @@
             Address.sin_port = htons(Port);
 
             if (IsServer) {
-                Address.sin_addr.s_addr = INADDR_ANY;
+                Address.sin_addr.s_addr = htonl(INADDR_ANY);
 
-                if (bind(Host -> Socket.Sock, (struct sockaddr *) &Address, sizeof(Address)) < 0) {
-                    perror("Bind");
+                if (bind(Host -> Socket.Sock, (struct sockaddr *) &Address, sizeof(Address)) == CC_SOCKET_ERROR) {
+                    #ifdef _WIN32
+                        fprintf(stderr, "Bind error: %d\n", WSAGetLastError());
+                    #else
+                        perror("Bind");
+                    #endif
 
                     return CC_FALSE;
                 }
             } else {
-                Address.sin_addr.s_addr = inet_addr(IP);
+                if (!IP)
+                    return CC_FALSE;
+
+                if (inet_pton(AF_INET, IP, &Address.sin_addr) != 1)
+                    return CC_FALSE;
             }
 
             return CC_TRUE;
