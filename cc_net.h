@@ -64,6 +64,29 @@
         int Sock;
     } CCNetSocket;
 
+    typedef struct {
+
+    } CCNetPeer;
+
+    CC_NET_API static int CCNetInitialize(void);
+    CC_NET_API static void CCNetCleanup(void);
+
+    #ifdef CHICHI_NET_IMPLEMENTATION
+        static int CCNetInitialize(void) {
+            #ifndef _WIN32
+                return 0;
+            #else
+                WSADATA WSAData;
+
+                return WSAStartup(MAKEWORD(2, 2), &WSAData);
+            #endif
+        }
+        
+        static void CCNetCleanup(void) {
+
+        }
+    #endif
+
     CC_EXTERN_C_END
 
 #endif
