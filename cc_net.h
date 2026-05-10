@@ -199,6 +199,9 @@
         }
 
         int CCNetReceive(CCNetHost *Host, char *Buffer, int MaxSize, CCNetPeer *OutputPeer) {
+            if (!Host || Host -> Socket.Sock == CC_INVALID_SOCKET || !Buffer || MaxSize <= 0 || !OutputPeer)
+                return -1;
+
             socklen_t Length = sizeof(OutputPeer -> Address);
 
             int Received = recvfrom(Host -> Socket.Sock, Buffer, MaxSize, 0, (struct sockaddr *) &OutputPeer -> Address, &Length);
@@ -209,11 +212,18 @@
         }
 
         void CCNetClose(CCNetHost *Host) {
-            #ifdef _WIN32
-                closesocket(Host -> Socket.Sock);
-            #else
-                close(Host -> Socket.Sock);
-            #endif
+            if (!Host)
+                return;
+
+            if (Host -> Socket.Sock != CC_INVALID_SOCKET) {
+                #ifdef _WIN32
+                    closesocket(Host -> Socket.Sock);
+                #else
+                    close(Host -> Socket.Sock);
+                #endif
+
+                Host -> Socket.Sock = CC_INVALID_SOCKET;
+            }
         }
     #endif
 
