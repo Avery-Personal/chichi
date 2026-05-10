@@ -182,11 +182,18 @@
         }
 
         int CCNetSend(CCNetHost *Host, const char *IP, int Port, const void *Data, int Size) {
+            if (!Host || Host -> Socket.Sock == CC_INVALID_SOCKET || !IP || !Data || Size < 0)
+                return -1;
+
             struct sockaddr_in Address;
+
+            memset(&Address, 0, sizeof(Address));
 
             Address.sin_family = AF_INET;
             Address.sin_port = htons(Port);
-            Address.sin_addr.s_addr = inet_addr(IP);
+
+            if (inet_pton(AF_INET, IP, &Address.sin_addr) != 1)
+                return -1;
 
             return sendto(Host -> Socket.Sock, Data, Size, 0, (struct sockaddr *) &Address, sizeof(Address));
         }
