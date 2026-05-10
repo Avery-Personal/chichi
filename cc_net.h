@@ -46,4 +46,14 @@
         #define CC_NET_API CC_API
     #endif
 
+    #ifndef _WIN32
+        #include <unistd.h>
+        #include <arpa/inet.h>
+        #include <sys/socket.h>
+    #else
+        #include <winsock2.h>
+    #endif
+
+    
+
 #endif
