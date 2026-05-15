@@ -46,6 +46,45 @@
         #define CC_NET_API CC_API
     #endif
 
+    #ifdef CHICHI_VFS_H
+        #define CC_VFS_HAS_VFS 1
+    #else
+        #define CC_VFS_HAS_VFS 0
+    #endif
+
+    #if !CC_VFS_HAS_VFS
+        #ifndef CC_VFS_TRACE
+            #define CC_VFS_TRACE(...) ((void) 0)
+        #endif
+
+        #ifndef CC_VFS_DEBUG
+            #define CC_VFS_DEBUG(...) ((void) 0)
+        #endif
+
+        #ifndef CC_VFS_INFO
+            #define CC_VFS_INFO(...) ((void) 0)
+        #endif
+
+        #ifndef CC_VFS_WARN
+            #define CC_VFS_WARN(...) ((void) 0)
+        #endif
+
+        #ifndef CC_VFS_ERROR
+            #define CC_VFS_ERROR(...) ((void) 0)
+        #endif
+
+        #ifndef CC_VFS_FATAL
+            #define CC_VFS_FATAL(...) ((void) 0)
+        #endif
+    #else
+        #define CC_VFS_TRACE(...) CC_TRACE(__VA_ARGS__)
+        #define CC_VFS_DEBUG(...) CC_DEBUG(__VA_ARGS__)
+        #define CC_VFS_INFO(...)  CC_INFO(__VA_ARGS__)
+        #define CC_VFS_WARN(...)  CC_WARN(__VA_ARGS__)
+        #define CC_VFS_ERROR(...) CC_ERROR(__VA_ARGS__)
+        #define CC_VFS_FATAL(...) CC_FATAL(__VA_ARGS__)
+    #endif
+
     CC_EXTERN_C_BEGIN
 
     
