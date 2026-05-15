@@ -1,3 +1,28 @@
+/*
+
+    cc_net.h - Embeddable & Stylish Framework of Networking for Chichi headers & general libraries
+
+    ALLPU License (Asuka License for Loosely Protective Use)
+    Copyright © 2026 Averi
+
+    Usage:
+        #define CHICHI_IMPLEMENTATION (General Chichi implementation of ALL headers)
+        #define CC_IMPLEMENTATION (General Chichi implementation of ALL headers)
+        #define CHICHI_NET_IMPLEMENTATION
+
+        Use this before inclusion of ANY Chichi header, regardless of language(s)
+
+    Standards:
+        C89 - Minimum (C)
+          C95> - Recommended (C)
+        C++98 - Minimum (C++)
+          C++11> - Recommended (C++)
+        ObjC 4.0> - Minimum (Objective-C)
+        ObjC++ 4.2 - Minimum (Objective-C++)
+          ObjC++ 5.0> - Recommended (Objective-C++)
+    
+*/
+
 #if (defined(CHICHI_IMPLEMENTATION) && !defined(CHICHI_NET_IMPLEMENTATION)) || (defined(CC_IMPLEMENTATION) && !defined(CHICHI_NET_IMPLEMENTATION))
     #define CHICHI_NET_IMPLEMENTATION
 #endif
